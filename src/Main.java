@@ -9,12 +9,16 @@ interface Connectable {
     void disconnect();
 }
 
+interface DeviceDetails {
+    String getDeviceInfo();
+}
+
 interface InformationProvider<T> {
     String getInfo();
     T getDetails();
 }
 
-abstract class ElectronicDevice<T> implements InformationProvider<T> {
+abstract class ElectronicDevice<T extends DeviceDetails> implements InformationProvider<T> {
     private String brand;
     protected double price;
     protected T details;
@@ -47,7 +51,7 @@ abstract class ElectronicDevice<T> implements InformationProvider<T> {
     }
 }
 
-class CableDetails {
+class CableDetails implements DeviceDetails {
     private int length;
 
     public CableDetails(int length) {
@@ -60,6 +64,11 @@ class CableDetails {
 
     public void setLength(int length) {
         this.length = length;
+    }
+
+    @Override
+    public String getDeviceInfo() {
+        return "Детали кабеля: длина = " + length;
     }
 }
 
@@ -84,7 +93,7 @@ class Cable extends ElectronicDevice<CableDetails> implements Connectable {
     }
 }
 
-class CaseDetails {
+class CaseDetails implements DeviceDetails {
     private String material;
 
     public CaseDetails(String material) {
@@ -97,6 +106,11 @@ class CaseDetails {
 
     public void setMaterial(String material) {
         this.material = material;
+    }
+
+    @Override
+    public String getDeviceInfo() {
+        return "Детали корпуса: материал = " + material;
     }
 }
 
@@ -111,7 +125,7 @@ class Case extends ElectronicDevice<CaseDetails> implements InformationProvider<
     }
 }
 
-class CapabilityDetails {
+class CapabilityDetails implements DeviceDetails {
     private String feature;
 
     public CapabilityDetails(String feature) {
@@ -124,6 +138,11 @@ class CapabilityDetails {
 
     public void setFeature(String feature) {
         this.feature = feature;
+    }
+
+    @Override
+    public String getDeviceInfo() {
+        return "Детали возможности: особенность = " + feature;
     }
 }
 
