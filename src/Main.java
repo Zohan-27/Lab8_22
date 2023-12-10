@@ -1,3 +1,7 @@
+import java.io.BufferedWriter;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.PrintWriter;
 import java.util.Scanner;
 
 interface Connectable {
@@ -203,7 +207,7 @@ public class Main {
                 continueInput = false;
             }
         }
-
+        System.out.println();
         System.out.println("Информация об устройствах:");
         for (InformationProvider<?> device : infoProviderDevices) {
             if (device != null) {
@@ -211,6 +215,22 @@ public class Main {
             }
         }
 
+        System.out.println();
+        writeDeviceInfoToFile(infoProviderDevices);
+
         scanner.close();
+    }
+
+    private static void writeDeviceInfoToFile(InformationProvider<?>[] devices) {
+        try (PrintWriter writer = new PrintWriter(new BufferedWriter(new FileWriter("device_info.txt")))) {
+            for (InformationProvider<?> device : devices) {
+                if (device != null) {
+                    writer.println(device.getInfo());
+                }
+            }
+            System.out.println("Информация об устройствах записана в файл 'device_info.txt'.");
+        } catch (IOException e) {
+            System.err.println("Ошибка при записи в файл: " + e.getMessage());
+        }
     }
 }
